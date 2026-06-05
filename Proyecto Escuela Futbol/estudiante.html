@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IERD Estudiante - Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{club:{green:'#1B5E20','green-light':'#2E7D32','green-50':'#E8F5E9',red:'#C62828','red-light':'#E53935','red-50':'#FFEBEE',orange:'#E65100','orange-light':'#F57C00','orange-50':'#FFF3E0',dark:'#2D2D2D','dark-2':'#1A1A1A',gray:'#4A4A4A'}},fontFamily:{sans:['Inter','sans-serif']}}}}</script>
+  <style>body{font-family:'Inter',sans-serif}@keyframes flicker{0%,100%{transform:scaleY(1) scaleX(1);opacity:1}25%{transform:scaleY(1.1) scaleX(0.95);opacity:0.9}50%{transform:scaleY(0.95) scaleX(1.05);opacity:1}75%{transform:scaleY(1.05) scaleX(0.98);opacity:0.95}}.flame{animation:flicker .8s ease-in-out infinite;transform-origin:bottom center}.sidebar-link{transition:all .2s}.sidebar-link:hover,.sidebar-link.active{background:rgba(59,130,246,0.2);color:#60a5fa}.page-section{display:none}.page-section.active{display:block}@media(max-width:1023px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}}</style>
+</head>
+<body class="bg-stone-50 min-h-screen">
+
+  <aside id="sidebar" class="sidebar fixed top-0 left-0 w-64 h-full bg-club-dark-2 z-40 flex flex-col lg:translate-x-0">
+    <div class="p-5 border-b border-white/10"><div class="flex items-center gap-3"><svg width="28" height="38" viewBox="0 0 36 48" class="flame"><ellipse cx="18" cy="12" rx="7" ry="12" fill="#E65100"/><ellipse cx="18" cy="10" rx="5" ry="9" fill="#F57C00"/><ellipse cx="18" cy="9" rx="3" ry="6" fill="#FFB74D"/><rect x="14" y="22" width="8" height="18" rx="2" fill="white"/><rect x="11" y="38" width="14" height="4" rx="2" fill="#9E9E9E"/><rect x="9" y="42" width="18" height="4" rx="2" fill="#757575"/></svg><div><div class="flex items-baseline"><span class="text-lg font-extrabold" style="color:#1B5E20">I</span><span class="text-lg font-extrabold text-white">E</span><span class="text-lg font-extrabold" style="color:#C62828">R</span><span class="text-lg font-extrabold text-white">D</span></div><span class="text-[8px] uppercase tracking-widest text-white/40">Estudiante</span></div></div></div>
+    <nav class="flex-1 p-4 space-y-1">
+      <button onclick="showSection('inicio')" class="sidebar-link active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:home"></iconify-icon> Inicio</button>
+      <button onclick="showSection('mi-perfil')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:user"></iconify-icon> Mi Perfil</button>
+      <button onclick="showSection('mi-horario')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:calendar"></iconify-icon> Mi Horario</button>
+      <button onclick="showSection('mis-notas')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:bar-chart-2"></iconify-icon> Mis Evaluaciones</button>
+      <button onclick="showSection('documentos')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:file-text"></iconify-icon> Documentos</button>
+      <button onclick="showSection('pagos')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:credit-card"></iconify-icon> Mis Pagos</button>
+    </nav>
+    <div class="p-4 border-t border-white/10"><button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-red-400 hover:bg-red-500/10 transition-colors"><iconify-icon icon="lucide:log-out"></iconify-icon> Cerrar Sesión</button></div>
+  </aside>
+
+  <main class="lg:ml-64 min-h-screen">
+    <header class="bg-white border-b border-stone-200 px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+      <div class="flex items-center gap-4"><button onclick="document.getElementById('sidebar').classList.toggle('open')" class="lg:hidden p-2 hover:bg-stone-100 rounded-lg"><iconify-icon icon="lucide:menu" class="text-xl text-neutral-600"></iconify-icon></button><h2 id="pageTitle" class="font-semibold text-lg">Inicio</h2></div>
+      <div class="flex items-center gap-3"><div class="hidden sm:flex items-center gap-2 text-sm text-neutral-500"><iconify-icon icon="lucide:user" class="text-blue-500"></iconify-icon> <span id="headerName">Estudiante</span></div><div class="w-9 h-9 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold" id="headerAvatar">E</div></div>
+    </header>
+
+    <div class="p-6">
+
+      <!-- INICIO -->
+      <div id="sec-inicio" class="page-section active">
+        <div class="bg-gradient-to-r from-blue-600 to-club-dark rounded-2xl p-6 text-white mb-6">
+          <h3 class="font-serif text-2xl mb-2">¡Hola! ⚽</h3>
+          <p class="text-white/70 text-sm">Bienvenido a tu panel estudiantil. Revisa tus horarios, evaluaciones y más.</p>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-4 mb-6">
+          <div class="bg-white rounded-2xl p-5 border border-stone-100 text-center"><div class="w-12 h-12 mx-auto mb-3 bg-club-green-50 rounded-xl flex items-center justify-center"><iconify-icon icon="lucide:layers" class="text-club-green text-xl"></iconify-icon></div><p class="text-sm font-semibold">Tu categoría</p><p class="text-xs text-neutral-400">Infantil</p></div>
+          <div class="bg-white rounded-2xl p-5 border border-stone-100 text-center"><div class="w-12 h-12 mx-auto mb-3 bg-club-orange-50 rounded-xl flex items-center justify-center"><iconify-icon icon="lucide:calendar" class="text-club-orange text-xl"></iconify-icon></div><p class="text-sm font-semibold">3 sesiones</p><p class="text-xs text-neutral-400">Esta semana</p></div>
+          <div class="bg-white rounded-2xl p-5 border border-stone-100 text-center"><div class="w-12 h-12 mx-auto mb-3 bg-blue-50 rounded-xl flex items-center justify-center"><iconify-icon icon="lucide:trophy" class="text-blue-500 text-xl"></iconify-icon></div><p class="text-sm font-semibold">4.5/5</p><p class="text-xs text-neutral-400">Tu evaluación</p></div>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-stone-100"><h3 class="font-semibold mb-4 flex items-center gap-2"><iconify-icon icon="lucide:bell" class="text-club-orange"></iconify-icon> Avisos Recientes</h3><div class="space-y-3"><div class="p-3 bg-club-green-50 rounded-xl"><p class="text-sm text-club-green font-medium">🏆 ¡Campeones del torneo amistoso!</p><p class="text-xs text-neutral-500 mt-1">Hace 2 días</p></div><div class="p-3 bg-club-orange-50 rounded-xl"><p class="text-sm text-club-orange font-medium">📅 Próximo partido: Enero 25 vs. Atlético Norte</p><p class="text-xs text-neutral-500 mt-1">Hace 5 días</p></div></div></div>
+      </div>
+
+      <!-- MI PERFIL -->
+      <div id="sec-mi-perfil" class="page-section">
+        <h3 class="font-semibold text-lg mb-6">Mi Perfil</h3>
+        <div class="bg-white rounded-2xl p-6 border border-stone-100">
+          <div class="flex items-center gap-4 mb-6"><div class="w-20 h-20 bg-club-green-50 rounded-2xl flex items-center justify-center text-2xl font-bold text-club-green">SP</div><div><h4 class="font-semibold text-xl">Santiago Pérez</h4><p class="text-sm text-neutral-400">Categoría Infantil · 8 años</p><span class="inline-block mt-1 text-xs bg-club-green-50 text-club-green px-2 py-1 rounded-full">Activo</span></div></div>
+          <div class="grid sm:grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-neutral-500 mb-1">Documento</label><p class="text-sm font-medium">1.123.456.789</p></div><div><label class="block text-xs font-medium text-neutral-500 mb-1">Fecha de nacimiento</label><p class="text-sm font-medium">15/03/2016</p></div><div><label class="block text-xs font-medium text-neutral-500 mb-1">Acudiente</label><p class="text-sm font-medium">Laura Gómez</p></div><div><label class="block text-xs font-medium text-neutral-500 mb-1">Teléfono acudiente</label><p class="text-sm font-medium">300 555 6677</p></div><div><label class="block text-xs font-medium text-neutral-500 mb-1">Profesor</label><p class="text-sm font-medium">Carlos Mendoza</p></div><div><label class="block text-xs font-medium text-neutral-500 mb-1">Sede</label><p class="text-sm font-medium">Cancha Principal IERD</p></div></div>
+        </div>
+      </div>
+
+      <!-- MI HORARIO -->
+      <div id="sec-mi-horario" class="page-section">
+        <h3 class="font-semibold text-lg mb-6">Mi Horario</h3>
+        <div class="space-y-3">
+          <div class="bg-white rounded-2xl p-5 border border-stone-100 flex items-center gap-4"><div class="text-center bg-club-green text-white rounded-xl px-4 py-3 flex-shrink-0"><div class="text-xs">LUN</div><div class="text-xl font-bold">20</div></div><div class="flex-1"><p class="font-semibold">Entrenamiento Infantil</p><p class="text-sm text-neutral-400">4:00 - 5:30 PM · Cancha Principal</p></div><iconify-icon icon="lucide:check-circle" class="text-club-green text-xl"></iconify-icon></div>
+          <div class="bg-white rounded-2xl p-5 border border-stone-100 flex items-center gap-4"><div class="text-center bg-club-green text-white rounded-xl px-4 py-3 flex-shrink-0"><div class="text-xs">MIÉ</div><div class="text-xl font-bold">22</div></div><div class="flex-1"><p class="font-semibold">Entrenamiento Infantil</p><p class="text-sm text-neutral-400">4:00 - 5:30 PM · Cancha Principal</p></div><iconify-icon icon="lucide:circle" class="text-neutral-300 text-xl"></iconify-icon></div>
+          <div class="bg-white rounded-2xl p-5 border border-stone-100 flex items-center gap-4"><div class="text-center bg-club-green text-white rounded-xl px-4 py-3 flex-shrink-0"><div class="text-xs">VIE</div><div class="text-xl font-bold">24</div></div><div class="flex-1"><p class="font-semibold">Entrenamiento Infantil</p><p class="text-sm text-neutral-400">4:00 - 5:30 PM · Cancha Principal</p></div><iconify-icon icon="lucide:circle" class="text-neutral-300 text-xl"></iconify-icon></div>
+        </div>
+      </div>
+
+      <!-- MIS EVALUACIONES -->
+      <div id="sec-mis-notas" class="page-section">
+        <h3 class="font-semibold text-lg mb-6">Mis Evaluaciones</h3>
+        <div class="bg-white rounded-2xl p-6 border border-stone-100">
+          <div class="grid sm:grid-cols-3 gap-4 mb-6"><div class="text-center p-4 bg-club-green-50 rounded-xl"><p class="text-3xl font-bold text-club-green">4.5</p><p class="text-xs text-neutral-500 mt-1">Técnica</p></div><div class="text-center p-4 bg-club-orange-50 rounded-xl"><p class="text-3xl font-bold text-club-orange">4.0</p><p class="text-xs text-neutral-500 mt-1">Táctica</p></div><div class="text-center p-4 bg-blue-50 rounded-xl"><p class="text-3xl font-bold text-blue-500">5.0</p><p class="text-xs text-neutral-500 mt-1">Actitud</p></div></div>
+          <div class="space-y-3"><div class="p-4 bg-stone-50 rounded-xl"><div class="flex items-center justify-between mb-2"><p class="text-sm font-medium">Evaluación Diciembre 2024</p><span class="text-xs text-club-green font-semibold">4.5/5</span></div><div class="w-full bg-stone-200 rounded-full h-2"><div class="bg-club-green rounded-full h-2" style="width:90%"></div></div></div><div class="p-4 bg-stone-50 rounded-xl"><div class="flex items-center justify-between mb-2"><p class="text-sm font-medium">Evaluación Noviembre 2024</p><span class="text-xs text-club-orange font-semibold">4.0/5</span></div><div class="w-full bg-stone-200 rounded-full h-2"><div class="bg-club-orange rounded-full h-2" style="width:80%"></div></div></div></div>
+        </div>
+      </div>
+
+      <!-- DOCUMENTOS -->
+      <div id="sec-documentos" class="page-section">
+        <h3 class="font-semibold text-lg mb-6">Mis Documentos</h3>
+        <div class="space-y-3">
+          <a href="#" class="bg-white rounded-2xl p-5 border border-stone-100 flex items-center gap-4 hover:shadow-md transition-shadow"><div class="w-12 h-12 bg-club-red-50 rounded-xl flex items-center justify-center"><iconify-icon icon="lucide:file-text" class="text-club-red text-xl"></iconify-icon></div><div class="flex-1"><p class="font-medium text-sm">Carnet Deportivo 2025</p><p class="text-xs text-neutral-400">PDF - Emitido 15/Ene/2025</p></div><iconify-icon icon="lucide:download" class="text-neutral-400 text-lg"></iconify-icon></a>
+          <a href="#" class="bg-white rounded-2xl p-5 border border-stone-100 flex items-center gap-4 hover:shadow-md transition-shadow"><div class="w-12 h-12 bg-club-green-50 rounded-xl flex items-center justify-center"><iconify-icon icon="lucide:file-text" class="text-club-green text-xl"></iconify-icon></div><div class="flex-1"><p class="font-medium text-sm">Certificado de Inscripción</p><p class="text-xs text-neutral-400">PDF - Emitido 10/Ene/2025</p></div><iconify-icon icon="lucide:download" class="text-neutral-400 text-lg"></iconify-icon></a>
+          <a href="#" class="bg-white rounded-2xl p-5 border border-stone-100 flex items-center gap-4 hover:shadow-md transition-shadow"><div class="w-12 h-12 bg-club-orange-50 rounded-xl flex items-center justify-center"><iconify-icon icon="lucide:file-text" class="text-club-orange text-xl"></iconify-icon></div><div class="flex-1"><p class="font-medium text-sm">Reglamento Interno</p><p class="text-xs text-neutral-400">PDF - Actualizado 2025</p></div><iconify-icon icon="lucide:download" class="text-neutral-400 text-lg"></iconify-icon></a>
+        </div>
+      </div>
+
+      <!-- PAGOS -->
+      <div id="sec-pagos" class="page-section">
+        <h3 class="font-semibold text-lg mb-6">Mis Pagos</h3>
+        <div class="bg-white rounded-2xl p-6 border border-stone-100 mb-6"><div class="grid sm:grid-cols-2 gap-4"><div class="text-center p-4 bg-club-green-50 rounded-xl"><p class="text-2xl font-bold text-club-green">Al día</p><p class="text-xs text-neutral-500 mt-1">Estado de pago</p></div><div class="text-center p-4 bg-blue-50 rounded-xl"><p class="text-2xl font-bold text-blue-500">$120.000</p><p class="text-xs text-neutral-500 mt-1">Próximo pago: Feb 5</p></div></div></div>
+        <div class="bg-white rounded-2xl border border-stone-100 overflow-hidden"><table class="w-full text-sm"><thead><tr class="bg-stone-50"><th class="text-left px-4 py-3 font-medium text-neutral-500">Fecha</th><th class="text-left px-4 py-3 font-medium text-neutral-500">Concepto</th><th class="text-left px-4 py-3 font-medium text-neutral-500">Monto</th><th class="text-left px-4 py-3 font-medium text-neutral-500">Estado</th></tr></thead><tbody><tr class="border-t border-stone-100"><td class="px-4 py-3">05/Ene/2025</td><td class="px-4 py-3">Mensualidad Enero</td><td class="px-4 py-3 font-medium">$120.000</td><td class="px-4 py-3"><span class="bg-club-green-50 text-club-green text-xs px-2 py-1 rounded-full">Pagado</span></td></tr><tr class="border-t border-stone-100"><td class="px-4 py-3">05/Dic/2024</td><td class="px-4 py-3">Mensualidad Diciembre</td><td class="px-4 py-3 font-medium">$120.000</td><td class="px-4 py-3"><span class="bg-club-green-50 text-club-green text-xs px-2 py-1 rounded-full">Pagado</span></td></tr></tbody></table></div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    function showSection(id){
+      document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));
+      document.getElementById('sec-'+id).classList.add('active');
+      document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      const t={inicio:'Inicio','mi-perfil':'Mi Perfil','mi-horario':'Mi Horario','mis-notas':'Mis Evaluaciones',documentos:'Documentos',pagos:'Mis Pagos'};
+      document.getElementById('pageTitle').textContent=t[id]||id;
+      document.getElementById('sidebar').classList.remove('open');
+    }
+
+    function logout(){
+      localStorage.removeItem('ierd_session');
+      sessionStorage.removeItem('ierd_session');
+      window.location.href='login.html';
+    }
+
+    // ✅ VERIFICACIÓN DE SESIÓN CORREGIDA
+    (function checkSession(){
+      try{
+        const local=localStorage.getItem('ierd_session');
+        const session=sessionStorage.getItem('ierd_session');
+        const raw=local||session;
+        if(!raw){window.location.href='login.html';return}
+        const data=JSON.parse(raw);
+        if(!data||!data.logged||data.role!=='estudiante'){
+          // Limpiar sesión inválida y redirigir
+          localStorage.removeItem('ierd_session');
+          sessionStorage.removeItem('ierd_session');
+          window.location.href='login.html';
+          return;
+        }
+        // Sesión válida - actualizar nombre en header si existe
+        if(data.email){
+          const name=data.email.split('@')[0];
+          const displayName=name.charAt(0).toUpperCase()+name.slice(1);
+          const headerName=document.getElementById('headerName');
+          const headerAvatar=document.getElementById('headerAvatar');
+          if(headerName)headerName.textContent=displayName;
+          if(headerAvatar)headerAvatar.textContent=displayName.charAt(0).toUpperCase();
+        }
+      }catch(e){
+        localStorage.removeItem('ierd_session');
+        sessionStorage.removeItem('ierd_session');
+        window.location.href='login.html';
+      }
+    })();
+  </script>
+</body>
+</html>

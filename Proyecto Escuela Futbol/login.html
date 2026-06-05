@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IERD Duitama - Iniciar Sesión</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config={theme:{extend:{colors:{club:{green:'#1B5E20','green-light':'#2E7D32','green-50':'#E8F5E9','green-100':'#C8E6C9',red:'#C62828','red-light':'#E53935','red-50':'#FFEBEE',orange:'#E65100','orange-light':'#F57C00','orange-50':'#FFF3E0',dark:'#2D2D2D','dark-2':'#1A1A1A',gray:'#4A4A4A'}},fontFamily:{sans:['Inter','sans-serif'],serif:['Playfair Display','serif']}}}}
+  </script>
+  <style>
+    html{scroll-behavior:smooth}body{font-family:'Inter',sans-serif}.font-serif{font-family:'Playfair Display',serif}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes flicker{0%,100%{transform:scaleY(1) scaleX(1);opacity:1}25%{transform:scaleY(1.1) scaleX(0.95);opacity:0.9}50%{transform:scaleY(0.95) scaleX(1.05);opacity:1}75%{transform:scaleY(1.05) scaleX(0.98);opacity:0.95}}
+    @keyframes pulse-glow{0%,100%{box-shadow:0 0 0 0 rgba(27,94,32,0.4)}50%{box-shadow:0 0 20px 10px rgba(27,94,32,0.1)}}
+    .animate-fade-up{animation:fadeInUp .8s ease forwards}.flame{animation:flicker .8s ease-in-out infinite;transform-origin:bottom center}.animate-pulse-glow{animation:pulse-glow 2s ease-in-out infinite}
+    .stripe-green-red{background:repeating-linear-gradient(90deg,#1B5E20 0px,#1B5E20 40px,#C62828 40px,#C62828 80px,#E65100 80px,#E65100 120px)}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#1A1A1A}::-webkit-scrollbar-thumb{background:#1B5E20;border-radius:4px}::-webkit-scrollbar-thumb:hover{background:#2E7D32}
+    .role-card{transition:all .3s ease;cursor:pointer;position:relative;overflow:hidden}
+    .role-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.15)}
+    .role-card.active{box-shadow:0 0 0 3px rgba(255,255,255,0.2);transform:translateY(-4px)}
+    .role-card .role-img{transition:transform .5s ease}
+    .role-card:hover .role-img{transform:scale(1.08)}
+    .role-card .role-overlay{transition:opacity .3s ease}
+    .toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:#1B5E20;color:#fff;padding:16px 24px;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.3);transform:translateX(120%);transition:transform .4s ease;max-width:320px}.toast.show{transform:translateX(0)}
+    .password-toggle{cursor:pointer;user-select:none}
+  </style>
+</head>
+<body class="bg-club-dark-2 min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+
+  <!-- Background decorations -->
+  <div class="absolute inset-0">
+    <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1920&q=80" alt="Fondo estadio" class="w-full h-full object-cover opacity-10">
+    <div class="absolute inset-0 bg-gradient-to-br from-club-dark-2/95 via-club-dark/90 to-club-dark-2/95"></div>
+  </div>
+  <div class="absolute top-0 left-0 right-0 h-1.5 stripe-green-red z-20"></div>
+
+  <!-- Floating decorations -->
+  <div class="absolute top-20 left-10 w-32 h-32 bg-club-green/5 rounded-full blur-2xl"></div>
+  <div class="absolute bottom-20 right-10 w-40 h-40 bg-club-red/5 rounded-full blur-2xl"></div>
+  <div class="absolute top-1/3 right-1/4 w-24 h-24 bg-club-orange/5 rounded-full blur-2xl"></div>
+
+  <!-- Main Container -->
+  <div class="relative z-10 w-full max-w-md animate-fade-up" style="animation-delay:100ms;opacity:0">
+
+    <!-- Logo -->
+    <div class="text-center mb-8">
+      <a href="index.html" class="inline-flex items-center gap-3 group">
+        <svg width="36" height="48" viewBox="0 0 36 48" class="flame"><ellipse cx="18" cy="12" rx="7" ry="12" fill="#E65100"/><ellipse cx="18" cy="10" rx="5" ry="9" fill="#F57C00"/><ellipse cx="18" cy="9" rx="3" ry="6" fill="#FFB74D"/><rect x="14" y="22" width="8" height="18" rx="2" fill="white"/><rect x="11" y="38" width="14" height="4" rx="2" fill="#9E9E9E"/><rect x="9" y="42" width="18" height="4" rx="2" fill="#757575"/></svg>
+        <div>
+          <div class="flex items-baseline justify-center">
+            <span class="text-2xl font-extrabold" style="color:#1B5E20">I</span>
+            <span class="text-2xl font-extrabold text-white">E</span>
+            <span class="text-2xl font-extrabold" style="color:#C62828">R</span>
+            <span class="text-2xl font-extrabold text-white">D</span>
+          </div>
+          <span class="block text-[9px] uppercase tracking-[0.25em] text-white/40 font-semibold">Duitama</span>
+        </div>
+      </a>
+      <h1 class="font-serif text-2xl sm:text-3xl text-white mt-6 mb-2">Iniciar Sesión</h1>
+      <p class="text-sm text-white/40">Accede a la plataforma de la escuela deportiva</p>
+    </div>
+
+    <!-- Login Card -->
+    <div class="bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl overflow-hidden">
+
+      <!-- Role Selection -->
+      <div class="p-6 pb-4">
+        <div class="grid grid-cols-3 gap-3">
+          <!-- Administrador -->
+          <div class="role-card rounded-2xl border-2 border-club-green bg-club-green/10 active" data-role="admin" onclick="selectRole(this,'admin')">
+            <div class="relative h-24 rounded-t-xl overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=300&q=80" alt="Administrador" class="role-img w-full h-full object-cover">
+              <div class="role-overlay absolute inset-0 bg-gradient-to-t from-club-green/90 via-club-green/40 to-transparent"></div>
+              <div class="absolute bottom-1.5 left-0 right-0 text-center">
+                <iconify-icon icon="lucide:shield-check" class="text-white text-lg drop-shadow-lg"></iconify-icon>
+              </div>
+            </div>
+            <div class="p-2 text-center">
+              <span class="text-xs font-bold text-club-green uppercase tracking-wider">Admin</span>
+            </div>
+          </div>
+
+          <!-- Profesor -->
+          <div class="role-card rounded-2xl border-2 border-white/10 bg-white/5" data-role="profesor" onclick="selectRole(this,'profesor')">
+            <div class="relative h-24 rounded-t-xl overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80" alt="Profesor" class="role-img w-full h-full object-cover">
+              <div class="role-overlay absolute inset-0 bg-gradient-to-t from-club-dark/80 via-club-dark/30 to-transparent"></div>
+              <div class="absolute bottom-1.5 left-0 right-0 text-center">
+                <iconify-icon icon="lucide:whistle" class="text-white text-lg drop-shadow-lg"></iconify-icon>
+              </div>
+            </div>
+            <div class="p-2 text-center">
+              <span class="text-xs font-bold text-white/60 uppercase tracking-wider">Profesor</span>
+            </div>
+          </div>
+
+          <!-- Estudiante -->
+          <div class="role-card rounded-2xl border-2 border-white/10 bg-white/5" data-role="estudiante" onclick="selectRole(this,'estudiante')">
+            <div class="relative h-24 rounded-t-xl overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=300&q=80" alt="Estudiante" class="role-img w-full h-full object-cover">
+              <div class="role-overlay absolute inset-0 bg-gradient-to-t from-club-dark/80 via-club-dark/30 to-transparent"></div>
+              <div class="absolute bottom-1.5 left-0 right-0 text-center">
+                <iconify-icon icon="lucide:graduation-cap" class="text-white text-lg drop-shadow-lg"></iconify-icon>
+              </div>
+            </div>
+            <div class="p-2 text-center">
+              <span class="text-xs font-bold text-white/60 uppercase tracking-wider">Estudiante</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="px-6">
+        <div class="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      </div>
+
+      <!-- Form -->
+      <div class="p-6 pt-5">
+        <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+          <!-- Email -->
+          <div>
+            <label class="block text-xs font-medium text-white/50 mb-1.5">Correo electrónico</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                <iconify-icon icon="lucide:mail" class="text-white/30 text-sm"></iconify-icon>
+              </div>
+              <input type="email" id="emailInput" required class="w-full pl-10 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:ring-2 focus:ring-club-green/40 focus:border-club-green outline-none transition-all placeholder-white/25" placeholder="correo@ierdduitama.com">
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label class="block text-xs font-medium text-white/50 mb-1.5">Contraseña</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                <iconify-icon icon="lucide:lock" class="text-white/30 text-sm"></iconify-icon>
+              </div>
+              <input type="password" id="passwordInput" required class="w-full pl-10 pr-11 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:ring-2 focus:ring-club-green/40 focus:border-club-green outline-none transition-all placeholder-white/25" placeholder="••••••••">
+              <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center password-toggle" onclick="togglePassword()">
+                <iconify-icon icon="lucide:eye" id="eyeIcon" class="text-white/30 hover:text-white/60 text-sm transition-colors"></iconify-icon>
+              </div>
+            </div>
+          </div>
+
+          <!-- Remember & Forgot -->
+          <div class="flex items-center justify-between">
+            <label class="flex items-center gap-2 cursor-pointer group">
+              <input type="checkbox" id="rememberMe" class="w-4 h-4 rounded border-white/20 bg-white/5 text-club-green focus:ring-club-green/30 focus:ring-offset-0 cursor-pointer">
+              <span class="text-xs text-white/40 group-hover:text-white/60 transition-colors">Recordarme</span>
+            </label>
+            <a href="#" class="text-xs text-club-orange-light hover:text-club-orange transition-colors" onclick="showToast('Recuperación','Contacta al administrador para restablecer tu contraseña');return false">¿Olvidaste tu contraseña?</a>
+          </div>
+
+          <!-- Error message -->
+          <div id="errorMsg" class="hidden bg-club-red-50/10 border border-club-red/20 rounded-xl p-3 flex items-center gap-2">
+            <iconify-icon icon="lucide:alert-circle" class="text-club-red-light flex-shrink-0"></iconify-icon>
+            <span class="text-xs text-club-red-light" id="errorText">Credenciales incorrectas</span>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" id="submitBtn" class="w-full bg-club-green hover:bg-club-green-light text-white font-semibold py-3.5 rounded-xl transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-club-green/25 flex items-center justify-center gap-2 text-sm">
+            <iconify-icon icon="lucide:log-in" class="text-lg"></iconify-icon>
+            Iniciar Sesión
+          </button>
+        </form>
+      </div>
+
+      <!-- Bottom link -->
+      <div class="px-6 pb-6">
+        <div class="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-5"></div>
+        <div class="text-center">
+          <p class="text-xs text-white/30">¿No tienes cuenta? <a href="index.html#inscripciones" class="text-club-orange-light hover:text-club-orange transition-colors font-medium">Inscríbete aquí</a></p>
+        </div>
+        <div class="mt-4 text-center">
+          <a href="index.html" class="inline-flex items-center gap-1.5 text-xs text-white/20 hover:text-white/50 transition-colors">
+            <iconify-icon icon="lucide:arrow-left" class="text-sm"></iconify-icon>
+            Volver al sitio
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer mini -->
+    <div class="text-center mt-6">
+      <p class="text-[10px] text-white/15">© 2025 IERD Duitama · Escuela Deportiva</p>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast">
+    <div class="flex items-center gap-3">
+      <iconify-icon icon="lucide:check-circle" class="text-xl flex-shrink-0"></iconify-icon>
+      <div>
+        <p class="font-medium text-sm" id="toastTitle">¡Éxito!</p>
+        <p class="text-xs text-white/70" id="toastMsg">Operación completada</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedRole='admin';
+
+    function selectRole(el,role){
+      selectedRole=role;
+      document.querySelectorAll('.role-card').forEach(card=>{
+        card.classList.remove('active');
+        card.style.borderColor='rgba(255,255,255,0.1)';
+        card.style.background='rgba(255,255,255,0.03)';
+        card.querySelector('span').classList.remove('text-club-green','text-club-orange-light','text-club-red-light');
+        card.querySelector('span').classList.add('text-white/60');
+        const overlay=card.querySelector('.role-overlay');
+        overlay.style.background='';
+      });
+
+      el.classList.add('active');
+
+      if(role==='admin'){
+        el.style.borderColor='#1B5E20';
+        el.style.background='rgba(27,94,32,0.1)';
+        el.querySelector('span').classList.remove('text-white/60');
+        el.querySelector('span').classList.add('text-club-green');
+        el.querySelector('.role-overlay').style.background='linear-gradient(to top, rgba(27,94,32,0.9), rgba(27,94,32,0.4), transparent)';
+      }else if(role==='profesor'){
+        el.style.borderColor='#E65100';
+        el.style.background='rgba(230,81,0,0.1)';
+        el.querySelector('span').classList.remove('text-white/60');
+        el.querySelector('span').classList.add('text-club-orange-light');
+        el.querySelector('.role-overlay').style.background='linear-gradient(to top, rgba(230,81,0,0.9), rgba(230,81,0,0.4), transparent)';
+      }else{
+        el.style.borderColor='#C62828';
+        el.style.background='rgba(198,40,40,0.1)';
+        el.querySelector('span').classList.remove('text-white/60');
+        el.querySelector('span').classList.add('text-club-red-light');
+        el.querySelector('.role-overlay').style.background='linear-gradient(to top, rgba(198,40,40,0.9), rgba(198,40,40,0.4), transparent)';
+      }
+
+      // Hide error
+      document.getElementById('errorMsg').classList.add('hidden');
+    }
+
+    function togglePassword(){
+      const input=document.getElementById('passwordInput');
+      const icon=document.getElementById('eyeIcon');
+      if(input.type==='password'){
+        input.type='text';
+        icon.setAttribute('icon','lucide:eye-off');
+      }else{
+        input.type='password';
+        icon.setAttribute('icon','lucide:eye');
+      }
+    }
+
+    function showToast(title,msg){
+      const t=document.getElementById('toast');
+      document.getElementById('toastTitle').textContent=title;
+      document.getElementById('toastMsg').textContent=msg;
+      t.classList.add('show');
+      setTimeout(()=>t.classList.remove('show'),4000);
+    }
+
+    function handleLogin(e){
+      e.preventDefault();
+      const email=document.getElementById('emailInput').value;
+      const password=document.getElementById('passwordInput').value;
+      const errorDiv=document.getElementById('errorMsg');
+      const errorText=document.getElementById('errorText');
+      const btn=document.getElementById('submitBtn');
+
+      // Loading state
+      btn.innerHTML='<iconify-icon icon="lucide:loader-2" class="text-lg animate-spin"></iconify-icon> Verificando...';
+      btn.disabled=true;
+
+      setTimeout(()=>{
+        // Simple validation
+        if(!email||!password){
+          errorText.textContent='Por favor completa todos los campos';
+          errorDiv.classList.remove('hidden');
+          btn.innerHTML='<iconify-icon icon="lucide:log-in" class="text-lg"></iconify-icon> Iniciar Sesión';
+          btn.disabled=false;
+          return;
+        }
+
+        if(password.length<4){
+          errorText.textContent='La contraseña debe tener al menos 4 caracteres';
+          errorDiv.classList.remove('hidden');
+          btn.innerHTML='<iconify-icon icon="lucide:log-in" class="text-lg"></iconify-icon> Iniciar Sesión';
+          btn.disabled=false;
+          return;
+        }
+
+        // Success
+        errorDiv.classList.add('hidden');
+        const roleNames={admin:'Administrador',profesor:'Profesor',estudiante:'Estudiante'};
+        showToast('¡Bienvenido!',`Has ingresado como ${roleNames[selectedRole]}`);
+
+        btn.innerHTML='<iconify-icon icon="lucide:check-circle" class="text-lg"></iconify-icon> ¡Acceso concedido!';
+        btn.classList.remove('bg-club-green','hover:bg-club-green-light');
+        btn.classList.add('bg-club-green-light');
+
+        setTimeout(()=>{
+          btn.innerHTML='<iconify-icon icon="lucide:log-in" class="text-lg"></iconify-icon> Iniciar Sesión';
+          btn.classList.add('bg-club-green','hover:bg-club-green-light');
+          btn.classList.remove('bg-club-green-light');
+          btn.disabled=false;
+        },2000);
+
+      },1200);
+    }
+
+    // Auto-fill hint based on role
+    document.querySelectorAll('.role-card').forEach(card=>{
+      card.addEventListener('click',function(){
+        const role=this.dataset.role;
+        const emailInput=document.getElementById('emailInput');
+        if(role==='admin') emailInput.placeholder='admin@ierdduitama.com';
+        else if(role==='profesor') emailInput.placeholder='profesor@ierdduitama.com';
+        else emailInput.placeholder='estudiante@ierdduitama.com';
+      });
+    });
+  </script>
+</body>
+</html>

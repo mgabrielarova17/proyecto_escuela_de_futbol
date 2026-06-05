@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IERD Admin - Panel de Administración</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config={theme:{extend:{colors:{club:{green:'#1B5E20','green-light':'#2E7D32','green-50':'#E8F5E9',red:'#C62828','red-light':'#E53935','red-50':'#FFEBEE',orange:'#E65100','orange-light':'#F57C00','orange-50':'#FFF3E0',dark:'#2D2D2D','dark-2':'#1A1A1A',gray:'#4A4A4A'}},fontFamily:{sans:['Inter','sans-serif']}}}}
+  </script>
+  <style>
+    body{font-family:'Inter',sans-serif}
+    @keyframes flicker{0%,100%{transform:scaleY(1) scaleX(1);opacity:1}25%{transform:scaleY(1.1) scaleX(0.95);opacity:0.9}50%{transform:scaleY(0.95) scaleX(1.05);opacity:1}75%{transform:scaleY(1.05) scaleX(0.98);opacity:0.95}}
+    .flame{animation:flicker .8s ease-in-out infinite;transform-origin:bottom center}
+    .stripe-green-red{background:repeating-linear-gradient(90deg,#1B5E20 0px,#1B5E20 40px,#C62828 40px,#C62828 80px,#E65100 80px,#E65100 120px)}
+    .sidebar-link{transition:all .2s}.sidebar-link:hover,.sidebar-link.active{background:rgba(27,94,32,0.2);color:#2E7D32}
+    .page-section{display:none}.page-section.active{display:block}
+    @media(max-width:1023px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}}
+    .toast{position:fixed;bottom:6rem;right:1.5rem;z-index:9999;background:#1B5E20;color:#fff;padding:16px 24px;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.3);transform:translateX(120%);transition:transform .4s ease;max-width:320px}.toast.show{transform:translateX(0)}
+  </style>
+</head>
+<body class="bg-stone-50 min-h-screen">
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar fixed top-0 left-0 w-64 h-full bg-club-dark-2 z-40 flex flex-col lg:translate-x-0">
+    <div class="p-5 border-b border-white/10">
+      <div class="flex items-center gap-3">
+        <svg width="28" height="38" viewBox="0 0 36 48" class="flame"><ellipse cx="18" cy="12" rx="7" ry="12" fill="#E65100"/><ellipse cx="18" cy="10" rx="5" ry="9" fill="#F57C00"/><ellipse cx="18" cy="9" rx="3" ry="6" fill="#FFB74D"/><rect x="14" y="22" width="8" height="18" rx="2" fill="white"/><rect x="11" y="38" width="14" height="4" rx="2" fill="#9E9E9E"/><rect x="9" y="42" width="18" height="4" rx="2" fill="#757575"/></svg>
+        <div><div class="flex items-baseline"><span class="text-lg font-extrabold" style="color:#1B5E20">I</span><span class="text-lg font-extrabold text-white">E</span><span class="text-lg font-extrabold" style="color:#C62828">R</span><span class="text-lg font-extrabold text-white">D</span></div><span class="text-[8px] uppercase tracking-widest text-white/40">Admin Panel</span></div>
+      </div>
+    </div>
+    <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+      <p class="text-[10px] uppercase tracking-widest text-white/30 font-semibold px-4 pt-2 pb-1">General</p>
+      <button onclick="showSection('dashboard')" class="sidebar-link active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:layout-dashboard"></iconify-icon> Dashboard</button>
+      
+      <p class="text-[10px] uppercase tracking-widest text-white/30 font-semibold px-4 pt-4 pb-1">Editar Página Web</p>
+      <button onclick="showSection('edit-hero')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:image"></iconify-icon> Inicio (Hero)</button>
+      <button onclick="showSection('edit-categorias')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:layers"></iconify-icon> Categorías</button>
+      <button onclick="showSection('edit-noticias')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:newspaper"></iconify-icon> Noticias</button>
+      <button onclick="showSection('edit-contacto')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:phone"></iconify-icon> Contacto</button>
+
+      <p class="text-[10px] uppercase tracking-widest text-white/30 font-semibold px-4 pt-4 pb-1">Gestión Interna</p>
+      <button onclick="showSection('estudiantes')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:users"></iconify-icon> Estudiantes</button>
+      <button onclick="showSection('pagos')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:credit-card"></iconify-icon> Pagos</button>
+    </nav>
+    <div class="p-4 border-t border-white/10">
+      <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-red-400 hover:bg-red-500/10 transition-colors"><iconify-icon icon="lucide:log-out"></iconify-icon> Cerrar Sesión</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="lg:ml-64 min-h-screen">
+    <header class="bg-white border-b border-stone-200 px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+      <div class="flex items-center gap-4">
+        <button onclick="document.getElementById('sidebar').classList.toggle('open')" class="lg:hidden p-2 hover:bg-stone-100 rounded-lg"><iconify-icon icon="lucide:menu" class="text-xl text-neutral-600"></iconify-icon></button>
+        <h2 id="pageTitle" class="font-semibold text-lg text-neutral-900">Dashboard</h2>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="index.html" target="_blank" class="hidden sm:flex items-center gap-2 text-sm text-club-green hover:text-club-green-light transition-colors"><iconify-icon icon="lucide:external-link"></iconify-icon> Ver Página</a>
+        <div class="w-9 h-9 bg-club-green rounded-full flex items-center justify-center text-white text-sm font-bold">A</div>
+      </div>
+    </header>
+
+    <div class="p-6">
+
+      <!-- DASHBOARD -->
+      <div id="sec-dashboard" class="page-section active">
+        <div class="bg-gradient-to-r from-club-green to-club-dark rounded-2xl p-6 text-white mb-6">
+          <h3 class="font-serif text-2xl mb-2">Panel de Administración 🔥</h3>
+          <p class="text-white/70 text-sm">Bienvenido. Usa el menú "Editar Página Web" para modificar el contenido que ven los visitantes en el sitio principal.</p>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div class="bg-white rounded-2xl p-5 border border-stone-100"><div class="flex items-center justify-between mb-3"><div class="w-10 h-10 bg-club-green-50 rounded-xl flex items-center justify-center"><iconify-icon icon="lucide:users" class="text-club-green"></iconify-icon></div><span class="text-xs text-club-green font-semibold bg-club-green-50 px-2 py-0.5 rounded-full">+12%</span></div><p class="text-2xl font-bold text-neutral-900">247</p><p class="text-xs text-neutral-400 mt-1">Estudiantes activos</p></div>
+          <div class="bg-white rounded-2xl p-5 border border-stone-100"><div class="flex items-center justify-between mb-3"><div class="w-10 h-10 bg-club-orange-50 rounded-xl flex items-center justify-center"><iconify-icon icon="lucide:graduation-cap" class="text-club-orange"></iconify-icon></div></div><p class="text-2xl font-bold text-neutral-900">12</p><p class="text-xs text-neutral-400 mt-1">Profesores</p></div>
+          <div class="bg-white rounded-2xl p-5 border border-stone-100"><div class="flex items-center justify-between mb-3"><div class="w-10 h-10 bg-club-red-50 rounded-xl flex items-center justify-center"><iconify-icon icon="lucide:trophy" class="text-club-red"></iconify-icon></div></div><p class="text-2xl font-bold text-neutral-900">4</p><p class="text-xs text-neutral-400 mt-1">Categorías</p></div>
+          <div class="bg-white rounded-2xl p-5 border border-stone-100"><div class="flex items-center justify-between mb-3"><div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center"><iconify-icon icon="lucide:credit-card" class="text-blue-600"></iconify-icon></div></div><p class="text-2xl font-bold text-neutral-900">$29.4M</p><p class="text-xs text-neutral-400 mt-1">Recaudo mensual</p></div>
+        </div>
+      </div>
+
+      <!-- EDITAR HERO -->
+      <div id="sec-edit-hero" class="page-section">
+        <div class="flex items-center justify-between mb-6"><h3 class="font-semibold text-lg">Editar Sección de Inicio (Hero)</h3><span class="text-xs bg-club-green-50 text-club-green px-3 py-1 rounded-full font-medium">Visible en página principal</span></div>
+        <form id="formHero" class="bg-white rounded-2xl p-6 border border-stone-100 space-y-5" onsubmit="saveSection(event, 'hero')">
+          <div><label class="block text-sm font-medium text-neutral-700 mb-1">Título Principal</label><input type="text" name="title" class="w-full px-4 py-3 border border-stone-200 rounded-xl text-sm focus:ring-2 focus:ring-club-green outline-none" placeholder="Encendemos pasión por el fútbol"></div>
+          <div><label class="block text-sm font-medium text-neutral-700 mb-1">Subtítulo / Frase</label><textarea name="subtitle" rows="3" class="w-full px-4 py-3 border border-stone-200 rounded-xl text-sm focus:ring-2 focus:ring-club-green outline-none resize-none" placeholder="En IERD Duitama forjamos talento..."></textarea></div>
+          <div><label class="block text-sm font-medium text-neutral-700 mb-1">URL de Imagen de Fondo</label><input type="url" name="image" class="w-full px-4 py-3 border border-stone-200 rounded-xl text-sm focus:ring-2 focus:ring-club-green outline-none" placeholder="https://..."></div>
+          <div class="flex items-center gap-4">
+            <button type="submit" class="bg-club-green text-white font-medium px-6 py-3 rounded-xl hover:bg-club-green-light transition-colors flex items-center gap-2"><iconify-icon icon="lucide:save"></iconify-icon> Guardar Cambios</button>
+            <button type="button" onclick="clearSection('hero')" class="bg-stone-100 text-neutral-600 font-medium px-6 py-3 rounded-xl hover:bg-stone-200 transition-colors">Restaurar</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- EDITAR CATEGORÍAS -->
+      <div id="sec-edit-categorias" class="page-section">
+        <div class="flex items-center justify-between mb-6"><h3 class="font-semibold text-lg">Editar Categorías</h3><span class="text-xs bg-club-green-50 text-club-green px-3 py-1 rounded-full font-medium">Visible en página principal</span></div>
+        <form id="formCategorias" class="space-y-6" onsubmit="saveSection(event, 'categorias')">
+          <!-- Cat 1 -->
+          <div class="bg-white rounded-2xl p-6 border border-stone-100 space-y-4">
+            <h4 class="font-semibold text-club-green flex items-center gap-2"><iconify-icon icon="lucide:baby"></iconify-icon> Infantil</h4>
+            <input type="hidden" name="cat0_id" value="infantil">
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Rango de Edad</label><input type="text" name="cat0_age" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="5-10 años"></div>
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Nivel</label><input type="text" name="cat0_level" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="Iniciación"></div>
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Horario</label><input type="text" name="cat0_schedule" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="Lun, Mié, Vie - 4:00 PM"></div>
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">URL Imagen</label><input type="url" name="cat0_image" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="https://..."></div>
+            </div>
+          </div>
+          <!-- Cat 2 -->
+          <div class="bg-white rounded-2xl p-6 border border-stone-100 space-y-4">
+            <h4 class="font-semibold text-club-orange flex items-center gap-2"><iconify-icon icon="lucide:zap"></iconify-icon> Prejuvenil</h4>
+            <input type="hidden" name="cat1_id" value="prejuvenil">
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Rango de Edad</label><input type="text" name="cat1_age" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="11-14 años"></div>
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Nivel</label><input type="text" name="cat1_level" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="Intermedio"></div>
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Horario</label><input type="text" name="cat1_schedule" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="Lun, Mié, Vie - 5:30 PM"></div>
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">URL Imagen</label><input type="url" name="cat1_image" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="https://..."></div>
+            </div>
+          </div>
+          <!-- Cat 3 -->
+          <div class="bg-white rounded-2xl p-6 border border-stone-100 space-y-4">
+            <h4 class="font-semibold text-club-red flex items-center gap-2"><iconify-icon icon="lucide:trophy"></iconify-icon> Juvenil</h4>
+            <input type="hidden" name="cat2_id" value="juvenil">
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Rango de Edad</label><input type="text" name="cat2_age" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="15-18 años"></div>
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Nivel</label><input type="text" name="cat2_level" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="Competitivo"></div>
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Horario</label><input type="text" name="cat2_schedule" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="Mar, Jue, Sáb - 5:00 PM"></div>
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">URL Imagen</label><input type="url" name="cat2_image" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="https://..."></div>
+            </div>
+          </div>
+          <!-- Cat 4 -->
+          <div class="bg-white rounded-2xl p-6 border border-stone-100 space-y-4">
+            <h4 class="font-semibold text-pink-600 flex items-center gap-2"><iconify-icon icon="lucide:shield"></iconify-icon> Femenino</h4>
+            <input type="hidden" name="cat3_id" value="femenino">
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Rango de Edad</label><input type="text" name="cat3_age" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="12+ años"></div>
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Nivel</label><input type="text" name="cat3_level" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="Todos</div>
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Horario</label><input type="text" name="cat3_schedule" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="Mar, Jue - 4:30 PM"></div>
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">URL Imagen</label><input type="url" name="cat3_image" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="https://..."></div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <button type="submit" class="bg-club-green text-white font-medium px-6 py-3 rounded-xl hover:bg-club-green-light transition-colors flex items-center gap-2"><iconify-icon icon="lucide:save"></iconify-icon> Guardar Categorías</button>
+            <button type="button" onclick="clearSection('categorias')" class="bg-stone-100 text-neutral-600 font-medium px-6 py-3 rounded-xl hover:bg-stone-200 transition-colors">Restaurar</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- EDITAR NOTICIAS -->
+      <div id="sec-edit-noticias" class="page-section">
+        <div class="flex items-center justify-between mb-6"><h3 class="font-semibold text-lg">Editar Noticias y Eventos</h3><span class="text-xs bg-club-green-50 text-club-green px-3 py-1 rounded-full font-medium">Visible en página principal</span></div>
+        <form id="formNoticias" class="space-y-6" onsubmit="saveSection(event, 'noticias')">
+          <div class="bg-white rounded-2xl p-6 border border-stone-100 space-y-4">
+            <h4 class="font-semibold text-club-green flex items-center gap-2"><iconify-icon icon="lucide:trophy"></iconify-icon> Noticia 1</h4>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Tipo</label><select name="news0_type" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none"><option value="resultado">🏆 Resultado</option><option value="partido">📅 Próximo Partido</option><option value="convocatoria">📢 Convocatoria</option></select></div>
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Fecha</label><input type="text" name="news0_date" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="15 Dic 2024"></div>
+              <div class="sm:col-span-2"><label class="block text-xs font-medium text-neutral-500 mb-1">Título</label><input type="text" name="news0_title" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="¡Campeones!"></div>
+              <div class="sm:col-span-2"><label class="block text-xs font-medium text-neutral-500 mb-1">Descripción</label><input type="text" name="news0_desc" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="Resumen corto..."></div>
+              <div class="sm:col-span-2"><label class="block text-xs font-medium text-neutral-500 mb-1">URL Imagen</label><input type="url" name="news0_image" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="https://..."></div>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border border-stone-100 space-y-4">
+            <h4 class="font-semibold text-club-orange flex items-center gap-2"><iconify-icon icon="lucide:calendar"></iconify-icon> Noticia 2</h4>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Tipo</label><select name="news1_type" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none"><option value="resultado">🏆 Resultado</option><option value="partido">📅 Próximo Partido</option><option value="convocatoria">📢 Convocatoria</option></select></div>
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Fecha</label><input type="text" name="news1_date" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none" placeholder="20 Ene 2025"></div>
+              <div class="sm:col-span-2"><label class="block text-xs font-medium text-neutral-500 mb-1">Título</label><input type="text" name="news1_title" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none"></div>
+              <div class="sm:col-span-2"><label class="block text-xs font-medium text-neutral-500 mb-1">Descripción</label><input type="text" name="news1_desc" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none"></div>
+              <div class="sm:col-span-2"><label class="block text-xs font-medium text-neutral-500 mb-1">URL Imagen</label><input type="url" name="news1_image" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none"></div>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border border-stone-100 space-y-4">
+            <h4 class="font-semibold text-club-red flex items-center gap-2"><iconify-icon icon="lucide:megaphone"></iconify-icon> Noticia 3</h4>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Tipo</label><select name="news2_type" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none"><option value="resultado">🏆 Resultado</option><option value="partido">📅 Próximo Partido</option><option value="convocatoria">📢 Convocatoria</option></select></div>
+              <div><label class="block text-xs font-medium text-neutral-500 mb-1">Fecha</label><input type="text" name="news2_date" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none"></div>
+              <div class="sm:col-span-2"><label class="block text-xs font-medium text-neutral-500 mb-1">Título</label><input type="text" name="news2_title" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none"></div>
+              <div class="sm:col-span-2"><label class="block text-xs font-medium text-neutral-500 mb-1">Descripción</label><input type="text" name="news2_desc" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none"></div>
+              <div class="sm:col-span-2"><label class="block text-xs font-medium text-neutral-500 mb-1">URL Imagen</label><input type="url" name="news2_image" class="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm focus:ring-club-green outline-none"></div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <button type="submit" class="bg-club-green text-white font-medium px-6 py-3 rounded-xl hover:bg-club-green-light transition-colors flex items-center gap-2"><iconify-icon icon="lucide:save"></iconify-icon> Guardar Noticias</button>
+            <button type="button" onclick="clearSection('noticias')" class="bg-stone-100 text-neutral-600 font-medium px-6 py-3 rounded-xl hover:bg-stone-200 transition-colors">Restaurar</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- EDITAR CONTACTO -->
+      <div id="sec-edit-contacto" class="page-section">
+        <div class="flex items-center justify-between mb-6"><h3 class="font-semibold text-lg">Editar Datos de Contacto</h3><span class="text-xs bg-club-green-50 text-club-green px-3 py-1 rounded-full font-medium">Visible en página principal</span></div>
+        <form id="formContacto" class="bg-white rounded-2xl p-6 border border-stone-100 space-y-5" onsubmit="saveSection(event, 'contacto')">
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div><label class="block text-sm font-medium text-neutral-700 mb-1">WhatsApp</label><input type="text" name="whatsapp" class="w-full px-4 py-3 border border-stone-200 rounded-xl text-sm focus:ring-2 focus:ring-club-green outline-none" placeholder="+57 300 123 4567"></div>
+            <div><label class="block text-sm font-medium text-neutral-700 mb-1">Correo Electrónico</label><input type="email" name="email" class="w-full px-4 py-3 border border-stone-200 rounded-xl text-sm focus:ring-2 focus:ring-club-green outline-none" placeholder="info@ierdduitama.com"></div>
+            <div><label class="block text-sm font-medium text-neutral-700 mb-1">Dirección</label><input type="text" name="address" class="w-full px-4 py-3 border border-stone-200 rounded-xl text-sm focus:ring-2 focus:ring-club-green outline-none" placeholder="Cra 15 #45-20, Duitama"></div>
+            <div><label class="block text-sm font-medium text-neutral-700 mb-1">Teléfono Fijo</label><input type="text" name="phone" class="w-full px-4 py-3 border border-stone-200 rounded-xl text-sm focus:ring-2 focus:ring-club-green outline-none" placeholder="(8) 742 1234"></div>
+          </div>
+          <div class="flex items-center gap-4 pt-2">
+            <button type="submit" class="bg-club-green text-white font-medium px-6 py-3 rounded-xl hover:bg-club-green-light transition-colors flex items-center gap-2"><iconify-icon icon="lucide:save"></iconify-icon> Guardar Contacto</button>
+            <button type="button" onclick="clearSection('contacto')" class="bg-stone-100 text-neutral-600 font-medium px-6 py-3 rounded-xl hover:bg-stone-200 transition-colors">Restaurar</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ESTUDIANTES (Placeholder) -->
+      <div id="sec-estudiantes" class="page-section">
+        <h3 class="font-semibold text-lg mb-6">Gestión de Estudiantes</h3>
+        <div class="bg-white rounded-2xl p-6 border border-stone-100 text-center py-12"><iconify-icon icon="lucide:users" class="text-4xl text-neutral-300 mb-3"></iconify-icon><p class="text-neutral-400 text-sm">Módulo de gestión de estudiantes en desarrollo.</p></div>
+      </div>
+
+      <!-- PAGOS (Placeholder) -->
+      <div id="sec-pagos" class="page-section">
+        <h3 class="font-semibold text-lg mb-6">Registro de Pagos</h3>
+        <div class="bg-white rounded-2xl p-6 border border-stone-100 text-center py-12"><iconify-icon icon="lucide:credit-card" class="text-4xl text-neutral-300 mb-3"></iconify-icon><p class="text-neutral-400 text-sm">Módulo de pagos en desarrollo.</p></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"><div class="flex items-center gap-3"><iconify-icon icon="lucide:check-circle" class="text-xl flex-shrink-0"></iconify-icon><span id="toastMsg" class="text-sm">Guardado</span></div></div>
+
+  <script>
+    // --- DEFAULT DATA ---
+    const defaults = {
+      hero: {
+        title: "Encendemos<br><span class='text-club-orange-light'>pasión</span> por<br>el fútbol",
+        subtitle: "En IERD Duitama forjamos talento, disciplina y amor por el deporte. Más que una escuela, una familia con la antorcha encendida.",
+        image: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1920&q=80"
+      },
+      categorias: [
+        { id:'infantil', age:'5-10 años', level:'Iniciación', schedule:'Lun, Mié, Vie - 4:00 PM', image:'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=600&q=80' },
+        { id:'prejuvenil', age:'11-14 años', level:'Intermedio', schedule:'Lun, Mié, Vie - 5:30 PM', image:'https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=600&q=80' },
+        { id:'juvenil', age:'15-18 años', level:'Competitivo', schedule:'Mar, Jue, Sáb - 5:00 PM', image:'https://images.unsplash.com/photo-1553778263-73a83bab9b0c?auto=format&fit=crop&w=600&q=80' },
+        { id:'femenino', age:'12+ años', level:'Todos', schedule:'Mar, Jue - 4:30 PM', image:'https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&w=600&q=80' }
+      ],
+      noticias: [
+        { type:'resultado', date:'15 Dic 2024', title:'¡Campeones del Torneo Departamental!', desc:'Nuestra categoría juvenil se coronó campeona tras una final emocionante.', image:'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80' },
+        { type:'partido', date:'20 Ene 2025', title:'IERD vs. Deportivo Central', desc:'Semi-final campeonato. Sábado 4:00 PM.', image:'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80' },
+        { type:'convocatoria', date:'10 Feb 2025', title:'Pruebas abiertas 2025', desc:'Convocamos nuevos talentos. ¡La antorcha te espera!', image:'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=800&q=80' }
+      ],
+      contacto: {
+        whatsapp: '+57 300 123 4567', email: 'info@ierdduitama.com', address: 'Cra 15 #45-20, Duitama, Boyacá', phone: '(8) 742 1234'
+      }
+    };
+
+    // --- HELPERS ---
+    function getCMS() {
+      try { return JSON.parse(localStorage.getItem('ierd_cms')) || {}; } catch(e) { return {}; }
+    }
+    function saveCMS(data) { localStorage.setItem('ierd_cms', JSON.stringify(data)); }
+    function getSectionData(section) { const cms = getCMS(); return cms[section] || defaults[section]; }
+
+    // --- POPULATE FORMS ---
+    function populateForms() {
+      // Hero
+      const hero = getSectionData('hero');
+      const fH = document.getElementById('formHero');
+      if(fH) { fH.title.value = hero.title.replace(/<[^>]*>?/gm, ''); fH.subtitle.value = hero.subtitle; fH.image.value = hero.image; }
+
+      // Categorias
+      const cats = getSectionData('categorias');
+      const fC = document.getElementById('formCategorias');
+      if(fC) { cats.forEach((c, i) => { if(fC[`cat${i}_age`]) { fC[`cat${i}_age`].value = c.age; fC[`cat${i}_level`].value = c.level; fC[`cat${i}_schedule`].value = c.schedule; fC[`cat${i}_image`].value = c.image; }}); }
+
+      // Noticias
+      const news = getSectionData('noticias');
+      const fN = document.getElementById('formNoticias');
+      if(fN) { news.forEach((n, i) => { if(fN[`news${i}_title`]) { fN[`news${i}_type`].value = n.type; fN[`news${i}_date`].value = n.date; fN[`news${i}_title`].value = n.title; fN[`news${i}_desc`].value = n.desc; fN[`news${i}_image`].value = n.image; }}); }
+
+      // Contacto
+      const cont = getSectionData('contacto');
+      const fCo = document.getElementById('formContacto');
+      if(fCo) { fCo.whatsapp.value = cont.whatsapp; fCo.email.value = cont.email; fCo.address.value = cont.address; fCo.phone.value = cont.phone; }
+    }
+
+    // --- SAVE ---
+    function saveSection(e, section) {
+      e.preventDefault();
+      const f = new FormData(e.target);
+      const obj = Object.fromEntries(f);
+      let cms = getCMS();
+
+      if(section === 'hero') {
+        cms.hero = { title: obj.title, subtitle: obj.subtitle, image: obj.image };
+      } else if(section === 'categorias') {
+        cms.categorias = [0,1,2,3].map(i => ({ id: obj[`cat${i}_id`], age: obj[`cat${i}_age`], level: obj[`cat${i}_level`], schedule: obj[`cat${i}_schedule`], image: obj[`cat${i}_image`] }));
+      } else if(section === 'noticias') {
+        cms.noticias = [0,1,2].map(i => ({ type: obj[`news${i}_type`], date: obj[`news${i}_date`], title: obj[`news${i}_title`], desc: obj[`news${i}_desc`], image: obj[`news${i}_image`] }));
+      } else if(section === 'contacto') {
+        cms.contacto = { whatsapp: obj.whatsapp, email: obj.email, address: obj.address, phone: obj.phone };
+      }
+
+      saveCMS(cms);
+      showToast('✅ Cambios guardados. Visita la página principal para verlos.');
+    }
+
+    function clearSection(section) {
+      if(!confirm('¿Restaurar datos originales? Se borrarán los cambios de esta sección.')) return;
+      let cms = getCMS();
+      delete cms[section];
+      saveCMS(cms);
+      populateForms();
+      showToast('ℹ️ Sección restaurada a los valores originales.');
+    }
+
+    // --- TOAST ---
+    function showToast(msg) { const t=document.getElementById('toast'); document.getElementById('toastMsg').textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),4000); }
+
+    // --- NAV ---
+    function showSection(id){ document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active')); document.getElementById('sec-'+id).classList.add('active'); document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active')); event.currentTarget.classList.add('active'); const titles={dashboard:'Dashboard','edit-hero':'Editar Inicio','edit-categorias':'Editar Categorías','edit-noticias':'Editar Noticias','edit-contacto':'Editar Contacto',estudiantes:'Estudiantes',pagos:'Pagos'}; document.getElementById('pageTitle').textContent=titles[id]||id; document.getElementById('sidebar').classList.remove('open'); }
+
+    function logout(){ localStorage.removeItem('ierd_session'); sessionStorage.removeItem('ierd_session'); window.location.href='login.html'; }
+
+    // --- INIT ---
+    const s=JSON.parse(localStorage.getItem('ierd_session')||sessionStorage.getItem('ierd_session')||'null');
+    if(!s||s.role!=='admin'){ window.location.href='login.html'; } else { populateForms(); }
+  </script>
+</body>
+</html>

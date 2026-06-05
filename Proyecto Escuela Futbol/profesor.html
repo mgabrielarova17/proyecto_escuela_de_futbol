@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IERD Profesor - Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>tailwind.config={theme:{extend:{colors:{club:{green:'#1B5E20','green-light':'#2E7D32','green-50':'#E8F5E9',red:'#C62828','red-light':'#E53935','red-50':'#FFEBEE',orange:'#E65100','orange-light':'#F57C00','orange-50':'#FFF3E0',dark:'#2D2D2D','dark-2':'#1A1A1A',gray:'#4A4A4A'}},fontFamily:{sans:['Inter','sans-serif']}}}}</script>
+  <style>body{font-family:'Inter',sans-serif}@keyframes flicker{0%,100%{transform:scaleY(1) scaleX(1);opacity:1}25%{transform:scaleY(1.1) scaleX(0.95);opacity:0.9}50%{transform:scaleY(0.95) scaleX(1.05);opacity:1}75%{transform:scaleY(1.05) scaleX(0.98);opacity:0.95}}.flame{animation:flicker .8s ease-in-out infinite;transform-origin:bottom center}.sidebar-link{transition:all .2s}.sidebar-link:hover,.sidebar-link.active{background:rgba(230,81,0,0.2);color:#F57C00}.page-section{display:none}.page-section.active{display:block}@media(max-width:1023px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}}</style>
+</head>
+<body class="bg-stone-50 min-h-screen">
+
+  <aside id="sidebar" class="sidebar fixed top-0 left-0 w-64 h-full bg-club-dark-2 z-40 flex flex-col lg:translate-x-0">
+    <div class="p-5 border-b border-white/10"><div class="flex items-center gap-3"><svg width="28" height="38" viewBox="0 0 36 48" class="flame"><ellipse cx="18" cy="12" rx="7" ry="12" fill="#E65100"/><ellipse cx="18" cy="10" rx="5" ry="9" fill="#F57C00"/><ellipse cx="18" cy="9" rx="3" ry="6" fill="#FFB74D"/><rect x="14" y="22" width="8" height="18" rx="2" fill="white"/><rect x="11" y="38" width="14" height="4" rx="2" fill="#9E9E9E"/><rect x="9" y="42" width="18" height="4" rx="2" fill="#757575"/></svg><div><div class="flex items-baseline"><span class="text-lg font-extrabold" style="color:#1B5E20">I</span><span class="text-lg font-extrabold text-white">E</span><span class="text-lg font-extrabold" style="color:#C62828">R</span><span class="text-lg font-extrabold text-white">D</span></div><span class="text-[8px] uppercase tracking-widest text-white/40">Profesor</span></div></div></div>
+    <nav class="flex-1 p-4 space-y-1">
+      <button onclick="showSection('inicio')" class="sidebar-link active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:home"></iconify-icon> Inicio</button>
+      <button onclick="showSection('mis-grupos')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:users"></iconify-icon> Mis Grupos</button>
+      <button onclick="showSection('asistencia')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:clipboard-check"></iconify-icon> Asistencia</button>
+      <button onclick="showSection('mi-horario')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:calendar"></iconify-icon> Mi Horario</button>
+      <button onclick="showSection('evaluacion')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:bar-chart-2"></iconify-icon> Evaluaciones</button>
+      <button onclick="showSection('mensajes')" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-white/60"><iconify-icon icon="lucide:message-square"></iconify-icon> Mensajes</button>
+    </nav>
+    <div class="p-4 border-t border-white/10"><button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-red-400 hover:bg-red-500/10 transition-colors"><iconify-icon icon="lucide:log-out"></iconify-icon> Cerrar Sesión</button></div>
+  </aside>
+
+  <main class="lg:ml-64 min-h-screen">
+    <header class="bg-white border-b border-stone-200 px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+      <div class="flex items-center gap-4"><button onclick="document.getElementById('sidebar').classList.toggle('open')" class="lg:hidden p-2 hover:bg-stone-100 rounded-lg"><iconify-icon icon="lucide:menu" class="text-xl text-neutral-600"></iconify-icon></button><h2 id="pageTitle" class="font-semibold text-lg">Inicio</h2></div>
+      <div class="flex items-center gap-3"><div class="hidden sm:flex items-center gap-2 text-sm text-neutral-500"><iconify-icon icon="lucide:graduation-cap" class="text-club-orange"></iconify-icon> Prof. Carlos Mendoza</div><div class="w-9 h-9 bg-club-orange rounded-full flex items-center justify-center text-white text-sm font-bold">CM</div></div>
+    </header>
+
+    <div class="p-6">
+      <!-- INICIO -->
+      <div id="sec-inicio" class="page-section active">
+        <div class="bg-gradient-to-r from-club-green to-club-dark rounded-2xl p-6 text-white mb-6">
+          <h3 class="font-serif text-2xl mb-2">¡Bienvenido, Profesor! 🔥</h3>
+          <p class="text-white/70 text-sm">Tienes 3 sesiones programadas esta semana. Revisa tus grupos y la asistencia.</p>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-4 mb-6">
+          <div class="bg-white rounded-2xl p-5 border border-stone-100"><div class="flex items-center gap-3 mb-2"><div class="w-10 h-10 bg-club-green-50 rounded-xl flex items-center justify-center"><iconify-icon icon="lucide:users" class="text-club-green"></iconify-icon></div></div><p class="text-2xl font-bold">127</p><p class="text-xs text-neutral-400">Estudiantes a cargo</p></div>
+          <div class="bg-white rounded-2xl p-5 border border-stone-100"><div class="flex items-center gap-3 mb-2"><div class="w-10 h-10 bg-club-orange-50 rounded-xl flex items-center justify-center"><iconify-icon icon="lucide:calendar" class="text-club-orange"></iconify-icon></div></div><p class="text-2xl font-bold">6</p><p class="text-xs text-neutral-400">Sesiones esta semana</p></div>
+          <div class="bg-white rounded-2xl p-5 border border-stone-100"><div class="flex items-center gap-3 mb-2"><div class="w-10 h-10 bg-club-red-50 rounded-xl flex items-center justify-center"><iconify-icon icon="lucide:clipboard-check" class="text-club-red"></iconify-icon></div></div><p class="text-2xl font-bold">92%</p><p class="text-xs text-neutral-400">Asistencia promedio</p></div>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-stone-100"><h3 class="font-semibold mb-4 flex items-center gap-2"><iconify-icon icon="lucide:calendar" class="text-club-green"></iconify-icon> Próximas Sesiones</h3><div class="space-y-3"><div class="flex items-center gap-4 p-3 bg-club-green-50 rounded-xl"><div class="text-center bg-club-green text-white rounded-lg px-3 py-2 flex-shrink-0"><div class="text-xs">LUN</div><div class="text-lg font-bold">20</div></div><div class="flex-1"><p class="font-medium text-sm">Infantil - Entrenamiento técnico</p><p class="text-xs text-neutral-500">4:00 PM - 5:30 PM · Cancha Principal</p></div></div><div class="flex items-center gap-4 p-3 bg-club-orange-50 rounded-xl"><div class="text-center bg-club-orange text-white rounded-lg px-3 py-2 flex-shrink-0"><div class="text-xs">MIÉ</div><div class="text-lg font-bold">22</div></div><div class="flex-1"><p class="font-medium text-sm">Juvenil - Preparación táctica</p><p class="text-xs text-neutral-500">5:00 PM - 7:00 PM · Complejo Deportivo</p></div></div></div></div>
+      </div>
+
+      <!-- MIS GRUPOS -->
+      <div id="sec-mis-grupos" class="page-section">
+        <h3 class="font-semibold text-lg mb-6">Mis Grupos</h3>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div class="bg-white rounded-2xl p-6 border border-stone-100"><div class="flex items-center gap-3 mb-4"><div class="w-10 h-10 bg-club-green-50 rounded-xl flex items-center justify-center"><iconify-icon icon="lucide:baby" class="text-club-green"></iconify-icon></div><div><h4 class="font-semibold">Infantil</h4><p class="text-xs text-neutral-400">62 estudiantes</p></div></div><div class="space-y-2 text-sm text-neutral-500"><p><iconify-icon icon="lucide:clock" class="inline mr-1"></iconify-icon> Lun, Mié, Vie - 4:00 PM</p><p><iconify-icon icon="lucide:map-pin" class="inline mr-1"></iconify-icon> Cancha Principal</p></div><button class="mt-4 w-full py-2 bg-club-green-50 text-club-green rounded-lg text-sm font-medium hover:bg-club-green-100 transition-colors">Ver estudiantes</button></div>
+          <div class="bg-white rounded-2xl p-6 border border-stone-100"><div class="flex items-center gap-3 mb-4"><div class="w-10 h-10 bg-club-red-50 rounded-xl flex items-center justify-center"><iconify-icon icon="lucide:trophy" class="text-club-red"></iconify-icon></div><div><h4 class="font-semibold">Juvenil</h4><p class="text-xs text-neutral-400">65 estudiantes</p></div></div><div class="space-y-2 text-sm text-neutral-500"><p><iconify-icon icon="lucide:clock" class="inline mr-1"></iconify-icon> Mar, Jue, Sáb - 5:00 PM</p><p><iconify-icon icon="lucide:map-pin" class="inline mr-1"></iconify-icon> Complejo Deportivo</p></div><button class="mt-4 w-full py-2 bg-club-red-50 text-club-red rounded-lg text-sm font-medium hover:bg-club-red-100 transition-colors">Ver estudiantes</button></div>
+        </div>
+      </div>
+
+      <!-- ASISTENCIA -->
+      <div id="sec-asistencia" class="page-section">
+        <h3 class="font-semibold text-lg mb-6">Control de Asistencia</h3>
+        <div class="bg-white rounded-2xl p-6 border border-stone-100"><div class="flex items-center justify-between mb-4"><h4 class="font-semibold">Infantil - Lun 20 Ene</h4><button class="bg-club-green text-white text-xs px-4 py-2 rounded-lg">Guardar</button></div>
+        <div class="space-y-2"><div class="flex items-center gap-3 p-3 bg-stone-50 rounded-xl"><div class="w-8 h-8 bg-club-green-50 rounded-full flex items-center justify-center text-xs font-bold text-club-green">SP</div><p class="flex-1 text-sm font-medium">Santiago Pérez</p><select class="px-3 py-1.5 border border-stone-200 rounded-lg text-xs"><option>Presente</option><option>Ausente</option><option>Justificado</option></select></div><div class="flex items-center gap-3 p-3 bg-stone-50 rounded-xl"><div class="w-8 h-8 bg-club-green-50 rounded-full flex items-center justify-center text-xs font-bold text-club-green">MG</div><p class="flex-1 text-sm font-medium">Mateo García</p><select class="px-3 py-1.5 border border-stone-200 rounded-lg text-xs"><option>Presente</option><option>Ausente</option><option>Justificado</option></select></div><div class="flex items-center gap-3 p-3 bg-stone-50 rounded-xl"><div class="w-8 h-8 bg-club-orange-50 rounded-full flex items-center justify-center text-xs font-bold text-club-orange">LD</div><p class="flex-1 text-sm font-medium">Lucía Díaz</p><select class="px-3 py-1.5 border border-stone-200 rounded-lg text-xs"><option selected>Ausente</option><option>Presente</option><option>Justificado</option></select></div></div></div>
+      </div>
+
+      <!-- MI HORARIO -->
+      <div id="sec-mi-horario" class="page-section">
+        <h3 class="font-semibold text-lg mb-6">Mi Horario Semanal</h3>
+        <div class="bg-white rounded-2xl border border-stone-100 overflow-hidden"><table class="w-full text-sm"><thead><tr class="bg-stone-50"><th class="px-4 py-3 font-medium text-neutral-500">Día</th><th class="px-4 py-3 font-medium text-neutral-500">Horario</th><th class="px-4 py-3 font-medium text-neutral-500">Categoría</th><th class="px-4 py-3 font-medium text-neutral-500">Sede</th></tr></thead><tbody><tr class="border-t border-stone-100"><td class="px-4 py-3 font-medium">Lunes</td><td class="px-4 py-3">4:00 - 5:30 PM</td><td class="px-4 py-3"><span class="bg-club-green-50 text-club-green text-xs px-2 py-1 rounded-full">Infantil</span></td><td class="px-4 py-3">Cancha Principal</td></tr><tr class="border-t border-stone-100"><td class="px-4 py-3 font-medium">Martes</td><td class="px-4 py-3">5:00 - 7:00 PM</td><td class="px-4 py-3"><span class="bg-club-red-50 text-club-red text-xs px-2 py-1 rounded-full">Juvenil</span></td><td class="px-4 py-3">Complejo Deportivo</td></tr><tr class="border-t border-stone-100"><td class="px-4 py-3 font-medium">Miércoles</td><td class="px-4 py-3">4:00 - 5:30 PM</td><td class="px-4 py-3"><span class="bg-club-green-50 text-club-green text-xs px-2 py-1 rounded-full">Infantil</span></td><td class="px-4 py-3">Cancha Principal</td></tr><tr class="border-t border-stone-100"><td class="px-4 py-3 font-medium">Jueves</td><td class="px-4 py-3">5:00 - 7:00 PM</td><td class="px-4 py-3"><span class="bg-club-red-50 text-club-red text-xs px-2 py-1 rounded-full">Juvenil</span></td><td class="px-4 py-3">Complejo Deportivo</td></tr><tr class="border-t border-stone-100"><td class="px-4 py-3 font-medium">Viernes</td><td class="px-4 py-3">4:00 - 5:30 PM</td><td class="px-4 py-3"><span class="bg-club-green-50 text-club-green text-xs px-2 py-1 rounded-full">Infantil</span></td><td class="px-4 py-3">Cancha Principal</td></tr><tr class="border-t border-stone-100"><td class="px-4 py-3 font-medium">Sábado</td><td class="px-4 py-3">5:00 - 7:00 PM</td><td class="px-4 py-3"><span class="bg-club-red-50 text-club-red text-xs px-2 py-1 rounded-full">Juvenil</span></td><td class="px-4 py-3">Complejo Deportivo</td></tr></tbody></table></div>
+      </div>
+
+      <!-- EVALUACIONES -->
+      <div id="sec-evaluacion" class="page-section">
+        <h3 class="font-semibold text-lg mb-6">Evaluaciones de Desempeño</h3>
+        <div class="bg-white rounded-2xl p-6 border border-stone-100"><p class="text-sm text-neutral-500 mb-4">Califica a tus estudiantes del 1 al 5 en cada aspecto.</p><div class="space-y-4"><div class="flex items-center gap-4 p-3 bg-stone-50 rounded-xl"><div class="w-8 h-8 bg-club-green-50 rounded-full flex items-center justify-center text-xs font-bold text-club-green">SP</div><p class="flex-1 text-sm font-medium">Santiago Pérez</p><div class="flex gap-2"><select class="px-2 py-1 border border-stone-200 rounded text-xs"><option>Técnica</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select><select class="px-2 py-1 border border-stone-200 rounded text-xs"><option>Táctica</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select><select class="px-2 py-1 border border-stone-200 rounded text-xs"><option>Actitud</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></div></div></div><button class="mt-4 bg-club-orange text-white text-sm font-medium px-6 py-2.5 rounded-xl hover:bg-club-orange-light transition-colors">Guardar Evaluaciones</button></div>
+      </div>
+
+      <!-- MENSAJES -->
+      <div id="sec-mensajes" class="page-section">
+        <h3 class="font-semibold text-lg mb-6">Mensajes</h3>
+        <div class="space-y-3"><div class="bg-white rounded-2xl p-5 border border-stone-100 hover:shadow-md transition-shadow cursor-pointer"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-club-green-50 rounded-full flex items-center justify-center"><iconify-icon icon="lucide:user" class="text-club-green"></iconify-icon></div><div class="flex-1"><div class="flex items-center justify-between"><p class="font-semibold text-sm">Laura Gómez (Acudiente)</p><span class="text-xs text-neutral-400">Hace 2h</span></div><p class="text-xs text-neutral-500 mt-1">Buenas tardes profesor, ¿podría hablar sobre el progreso de Santiago?</p></div></div></div><div class="bg-white rounded-2xl p-5 border border-stone-100 hover:shadow-md transition-shadow cursor-pointer"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-club-orange-50 rounded-full flex items-center justify-center"><iconify-icon icon="lucide:shield-check" class="text-club-orange"></iconify-icon></div><div class="flex-1"><div class="flex items-center justify-between"><p class="font-semibold text-sm">Administración IERD</p><span class="text-xs text-neutral-400">Ayer</span></div><p class="text-xs text-neutral-500 mt-1">Recordatorio: Reunión de cuerpo técnico este viernes 3:00 PM.</p></div></div></div></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function showSection(id){document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));document.getElementById('sec-'+id).classList.add('active');document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));event.currentTarget.classList.add('active');const t={inicio:'Inicio','mis-grupos':'Mis Grupos',asistencia:'Asistencia','mi-horario':'Mi Horario',evaluacion:'Evaluaciones',mensajes:'Mensajes'};document.getElementById('pageTitle').textContent=t[id]||id;document.getElementById('sidebar').classList.remove('open')}
+    function logout(){localStorage.removeItem('ierd_session');sessionStorage.removeItem('ierd_session');window.location.href='login.html'}
+    const s=JSON.parse(localStorage.getItem('ierd_session')||sessionStorage.getItem('ierd_session')||'null');if(!s||s.role!=='profesor'){window.location.href='login.html'}
+  </script>
+</body>
+</html>
